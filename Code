@@ -1,0 +1,68 @@
+#include <DMXSerial.h>
+#include <Servo.h>
+
+Servo servo1;
+Servo servo2;
+Servo servo3;
+Servo servo4;
+
+#define DMX_NUM_CHANNELS 4
+
+
+
+int val1;
+int val2;
+int val3;
+int val4;
+int start1 = digitalRead(10) * 1;
+int start2 = digitalRead(11) * 2;
+int start3 = digitalRead(12) * 4;
+int start4 = digitalRead(13) * 8;
+int start5 = digitalRead(A0) * 16;
+int start6 = digitalRead(A1) * 32;
+int start7 = digitalRead(A2) * 64;
+int start8 = digitalRead(A3) * 128;
+int start9 = digitalRead(A4) * 256;
+
+int DMX_START_ADDRESS = start1 + start2 + start3 + start4 + start5 + start6 + start7 + start8 + start9;
+
+void setup()
+{
+  DMXSerial.init(DMXReceiver);
+
+    servo1.attach(5);
+    servo2.attach(6);
+    servo3.attach(7);
+    servo4.attach(8);
+
+    
+}
+
+void loop()
+{
+  while (DMX_START_ADDRESS =! 0)
+
+  {
+    digitalWrite(9, LOW);
+  
+    val1 = DMXSerial.read(DMX_START_ADDRESS);
+    val2 = DMXSerial.read(DMX_START_ADDRESS+1);
+    val3 = DMXSerial.read(DMX_START_ADDRESS+2);
+    val4 = DMXSerial.read(DMX_START_ADDRESS+3);
+    
+    val1 = map(val1, 0, 255, 0, 180);
+    val2 = map(val2, 0, 255, 0, 180);
+    val3 = map(val3, 0, 255, 0, 180);
+    val4 = map(val4, 0, 255, 0, 180);
+
+    servo1.write(val1);                  
+    delay(15);
+    servo2.write(val2);                  
+    delay(15);
+    servo3.write(val3);                  
+    delay(15);
+    servo4.write(val4);                  
+    delay(15);
+  }
+  
+}
